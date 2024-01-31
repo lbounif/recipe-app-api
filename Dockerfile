@@ -13,7 +13,11 @@ ARG DEV=false
 # create a new virtual env for dependencies:python -m venv /py
 RUN python -m venv /py && \ 
     /py/bin/pip install --upgrade pip && \
-    # install our requirements
+    # install postgres dependency
+    apk add --update --no-cache postgresql-client && \
+    # install dependencies
+    apk add --update --no-cache --virtual .tmp-build-deps \
+        build-base postgresql-dev musl-dev && \
     /py/bin/pip install -r /tmp/requirements.txt && \
     # Install dev dependencices if dev=true
     if [ $DEV = "true" ]; \
@@ -21,6 +25,7 @@ RUN python -m venv /py && \
     fi && \
     # remove all dependencies we don't need
     rm -rf /tmp && \
+    apk del .tmp-build-deps && \
     #use a user different from root user
     adduser \
         --disabled-password \
