@@ -16,7 +16,7 @@ RUN python -m venv /py && \
     # install our requirements
     /py/bin/pip install -r /tmp/requirements.txt && \
     # Install dev dependencices if dev=true
-    if [ $DEV= "true"]; \
+    if [ $DEV = "true" ]; \
         then /py/bin/pip install -r /tmp/requirements.dev.txt ; \
     fi && \
     # remove all dependencies we don't need
